@@ -5,7 +5,7 @@
 #include <QRandomGenerator>
 #include <QTime>
 #include <QTimer>
-
+#include <iostream>
 #include "config.h"
 #include "dialog.h"
 #include "ui_dialog.h"
@@ -22,8 +22,8 @@ const QString &getKeyMapPath()
 {
     if (s_keyMapPath.isEmpty()) {
         s_keyMapPath = QString::fromLocal8Bit(qgetenv("QTSCRCPY_KEYMAP_PATH"));
-        QFileInfo fileInfo(s_keyMapPath);
-        if (s_keyMapPath.isEmpty() || !fileInfo.isDir()) {
+        QDir fileInfo = QDir{s_keyMapPath};
+        if (s_keyMapPath.isEmpty()) {
             s_keyMapPath = QCoreApplication::applicationDirPath() + "/keymap";
         }
     }
@@ -36,7 +36,7 @@ Dialog::Dialog(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     initUI();
 
     updateBootConfig(true);
-
+    on_refreshGameScriptBtn_clicked();
     on_useSingleModeCheck_clicked();
     on_updateDevice_clicked();
 

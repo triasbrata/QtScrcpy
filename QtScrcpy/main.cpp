@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_LINUX
     qputenv("QTSCRCPY_ADB_PATH", "../../../QtScrcpy/QtScrcpyCore/src/third_party/adb/linux/adb");
     qputenv("QTSCRCPY_SERVER_PATH", "../../../QtScrcpy/QtScrcpyCore/src/third_party/scrcpy-server");
-    qputenv("QTSCRCPY_KEYMAP_PATH", "../../../keymap");
+    qputenv("QTSCRCPY_KEYMAP_PATH", "./keymap");
     qputenv("QTSCRCPY_CONFIG_PATH", "../../../config");
 #endif
 
@@ -105,7 +105,6 @@ int main(int argc, char *argv[])
     }
 
     qsc::AdbProcess::setAdbPath(Config::getInstance().getAdbPath());
-
     g_mainDlg = new Dialog {};
     g_mainDlg->show();
 
