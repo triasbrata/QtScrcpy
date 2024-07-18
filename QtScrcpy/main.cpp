@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef Q_OS_LINUX
-    qputenv("QTSCRCPY_ADB_PATH", "../../../QtScrcpy/QtScrcpyCore/src/third_party/adb/linux/adb");
-    qputenv("QTSCRCPY_SERVER_PATH", "../../../QtScrcpy/QtScrcpyCore/src/third_party/scrcpy-server");
+    qputenv("QTSCRCPY_ADB_PATH", "./QtScrcpy/QtScrcpyCore/src/third_party/adb/linux/adb");
+    qputenv("QTSCRCPY_SERVER_PATH", "./QtScrcpy/QtScrcpyCore/src/third_party/scrcpy-server");
     qputenv("QTSCRCPY_KEYMAP_PATH", "./keymap");
-    qputenv("QTSCRCPY_CONFIG_PATH", "../../../config");
+    qputenv("QTSCRCPY_CONFIG_PATH", "./config");
 #endif
 
     g_msgType = covertLogLevel(Config::getInstance().getLogLevel());
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
@@ -105,11 +105,11 @@ int main(int argc, char *argv[])
     }
 
     qsc::AdbProcess::setAdbPath(Config::getInstance().getAdbPath());
-    g_mainDlg = new Dialog {};
+    g_mainDlg = new Dialog{};
     g_mainDlg->show();
 
     qInfo() << QObject::tr("This software is completely open source and free. Use it at your own risk. You can download it at the "
-            "following address:");
+                           "following address:");
     qInfo() << QString("QtScrcpy %1 <https://github.com/barry-ran/QtScrcpy>").arg(QCoreApplication::applicationVersion());
 
     qInfo() << QObject::tr("If you need more professional screen projection control software, you can try the following software:");
