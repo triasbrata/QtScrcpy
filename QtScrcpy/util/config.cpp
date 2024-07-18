@@ -1,7 +1,7 @@
 ﻿#include <QCoreApplication>
+#include <QDebug>
 #include <QFileInfo>
 #include <QSettings>
-#include <QDebug>
 
 #include "config.h"
 #ifdef Q_OS_OSX
@@ -115,7 +115,7 @@ Config::Config(QObject *parent) : QObject(parent)
     m_userData = new QSettings(getConfigPath() + "/userdata.ini", QSettings::IniFormat);
     m_userData->setIniCodec("UTF-8");
 
-    qDebug()<<m_userData->childGroups();
+    qDebug() << m_userData->childGroups();
 }
 
 Config &Config::getInstance()

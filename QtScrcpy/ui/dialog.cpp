@@ -1,4 +1,9 @@
-﻿#include <QDebug>
+﻿#include "dialog.h"
+#include "../groupcontroller/groupcontroller.h"
+#include "config.h"
+#include "ui_dialog.h"
+#include "videoform.h"
+#include <QDebug>
 #include <QFile>
 #include <QFileDialog>
 #include <QKeyEvent>
@@ -6,11 +11,6 @@
 #include <QTime>
 #include <QTimer>
 #include <iostream>
-#include "config.h"
-#include "dialog.h"
-#include "ui_dialog.h"
-#include "videoform.h"
-#include "../groupcontroller/groupcontroller.h"
 
 #ifdef Q_OS_WIN32
 #include "../util/winutils.h"
@@ -22,8 +22,9 @@ const QString &getKeyMapPath()
 {
     if (s_keyMapPath.isEmpty()) {
         s_keyMapPath = QString::fromLocal8Bit(qgetenv("QTSCRCPY_KEYMAP_PATH"));
-        QDir fileInfo = QDir{s_keyMapPath};
-        if (s_keyMapPath.isEmpty()) {
+        QFileInfo fileInfo(s_keyMapPath);
+        qDebug() << "keymap path: " << fileInfo.absolutePath();
+        if (s_keyMapPath.isEmpty() || !fileInfo.isDir()) {
             s_keyMapPath = QCoreApplication::applicationDirPath() + "/keymap";
         }
     }
@@ -134,7 +135,10 @@ Dialog::~Dialog()
     qsc::IDeviceManage::getInstance().disconnectAllDevice();
     delete ui;
 }
-
+void Dialog::on_saveConfigBtn_clicked()
+{
+    updateBootConfig(false);
+}
 void Dialog::initUI()
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -275,10 +279,7 @@ void Dialog::closeEvent(QCloseEvent *event)
     this->hide();
     if (!Config::getInstance().getTrayMessageShown()) {
         Config::getInstance().setTrayMessageShown(true);
-        m_hideIcon->showMessage(tr("Notice"),
-                                tr("Hidden here!"),
-                                QSystemTrayIcon::Information,
-                                3000);
+        m_hideIcon->showMessage(tr("Notice"), tr("Hidden here!"), QSystemTrayIcon::Information, 3000);
     }
     event->ignore();
 }
@@ -451,7 +452,7 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
     auto videoForm = new VideoForm(ui->framelessCheck->isChecked(), Config::getInstance().getSkin());
     videoForm->setSerial(serial);
 
-    qsc::IDeviceManage::getInstance().getDevice(serial)->setUserData(static_cast<void*>(videoForm));
+    qsc::IDeviceManage::getInstance().getDevice(serial)->setUserData(static_cast<void *>(videoForm));
     qsc::IDeviceManage::getInstance().getDevice(serial)->registerDeviceObserver(videoForm);
 
     videoForm->showFPS(ui->fpsCheck->isChecked());
@@ -482,7 +483,7 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 
 #ifdef Q_OS_WIN32
     // windows是show太早可以看到resize的过程
-    QTimer::singleShot(200, videoForm, [videoForm](){videoForm->show();});
+    QTimer::singleShot(200, videoForm, [videoForm]() { videoForm->show(); });
 #endif
 
     GroupController::instance().addDevice(serial);
@@ -497,7 +498,7 @@ void Dialog::onDeviceDisconnected(QString serial)
     }
     auto data = device->getUserData();
     if (data) {
-        VideoForm* vf = static_cast<VideoForm*>(data);
+        VideoForm *vf = static_cast<VideoForm *>(data);
         qsc::IDeviceManage::getInstance().getDevice(serial)->deRegisterDeviceObserver(vf);
         vf->close();
         vf->deleteLater();
@@ -611,7 +612,8 @@ void Dialog::on_usbConnectBtn_clicked()
 
 int Dialog::findDeviceFromeSerialBox(bool wifi)
 {
-    QRegExp regIP("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\:([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])\\b");
+    QRegExp regIP("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\:([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-"
+                  "5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])\\b");
     for (int i = 0; i < ui->serialBox->count(); ++i) {
         bool isWifi = regIP.exactMatch(ui->serialBox->itemText(i));
         bool found = wifi ? isWifi : !isWifi;
@@ -702,8 +704,7 @@ void Dialog::on_serialBox_currentIndexChanged(const QString &arg1)
 
 quint32 Dialog::getBitRate()
 {
-    return ui->bitRateEdit->text().trimmed().toUInt() *
-            (ui->bitRateBox->currentText() == QString("Mbps") ? 1000000 : 1000);
+    return ui->bitRateEdit->text().trimmed().toUInt() * (ui->bitRateBox->currentText() == QString("Mbps") ? 1000000 : 1000);
 }
 
 const QString &Dialog::getServerPath()

@@ -12,9 +12,8 @@ export PATH=$qt_gcc_path/bin:$PATH
 
 # Remember working directory
 old_cd=$(pwd)
-
 # Set working dir to the script's path
-cd $(dirname "$0")/.../
+cd $(dirname "$0")/../
 
 echo
 echo

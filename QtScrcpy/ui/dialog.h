@@ -1,17 +1,16 @@
 ﻿#ifndef DIALOG_H
 #define DIALOG_H
 
-#include <QWidget>
-#include <QPointer>
-#include <QMessageBox>
-#include <QMenu>
-#include <QSystemTrayIcon>
 #include <QListWidget>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPointer>
+#include <QSystemTrayIcon>
 #include <QTimer>
+#include <QWidget>
 
-
-#include "adbprocess.h"
 #include "../QtScrcpyCore/include/QtScrcpyCore.h"
+#include "adbprocess.h"
 #include "audio/audiooutput.h"
 
 namespace Ui
@@ -33,7 +32,7 @@ public:
     void getIPbyIp();
 
 private slots:
-    void onDeviceConnected(bool success, const QString& serial, const QString& deviceName, const QSize& size);
+    void onDeviceConnected(bool success, const QString &serial, const QString &deviceName, const QSize &size);
     void onDeviceDisconnected(QString serial);
 
     void on_updateDevice_clicked();
@@ -44,6 +43,7 @@ private slots:
     void on_getIPBtn_clicked();
     void on_wirelessDisConnectBtn_clicked();
     void on_selectRecordPathBtn_clicked();
+    void on_saveConfigBtn_clicked();
     void on_recordPathEdt_textChanged(const QString &arg1);
     void on_adbCommandBtn_clicked();
     void on_stopAdbBtn_clicked();

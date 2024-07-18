@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "name": "Qt6 Debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/output/x64/debug/QtScrcpy",
+      "cwd": "${workspaceFolder}/QtScrcpy", // Ensure this is set correctly
+      "args": [],
+      "stopAtEntry": false,
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "Run build_for_linux.sh with debug", // Link to the task label
+      "miDebuggerPath": "/usr/bin/gdb", // Ensure this is the correct path
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ],
+  "version": "2.0.0"
+}
