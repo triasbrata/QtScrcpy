@@ -2,10 +2,34 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run build_for_linux.sh with debug",
+      "label": "generate build version",
+      "windows": {
+        "command": "python",
+        "args": ["ci\\generate-version.py"]
+      },
+      "linux": {
+        "command": "python",
+        "args": ["./ci/generate-version.py"]
+      }
+    },
+    {
+      "label": "Run Build",
       "type": "shell",
-      "command": "./ci/linux/build_for_linux.sh",
-      "args": ["debug"],
+      "windows": {
+        "options": {
+          "env": {
+            "ENV_VCVARSALL": "C:\\Program Files (x86)Microsoft Visual Studio\\2022BuildToolsVCAuxiliaryBuild\\vcvarsall.bat",
+            "ENV_VCINSTALL": "C:\\Program Files (x86)Microsoft Visual Studio\\2022BuildToolsVC",
+            "ENV_QT_PATH": "D:\\Qt\\5.15.2"
+          }
+        },
+        "command": "ci\\win\\build_for_win_local.bat"
+      },
+      "linux": {
+        "command": "./ci/linux/build_for_linux.sh"
+      },
+      "dependsOn": ["generate build version"],
+      "args": ["Debug"],
       "group": {
         "kind": "build",
         "isDefault": true
