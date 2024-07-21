@@ -11,6 +11,8 @@
     "vector": "cpp",
     "system_error": "cpp",
     "new": "cpp",
-    "clang-format.executable": "/usr/bin/clang-format"
-  }
+    "clang-format.executable": "/usr/bin/clang-format",
+    "fstream": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
