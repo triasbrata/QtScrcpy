@@ -13,23 +13,36 @@
       }
     },
     {
+      "label": "generate build version",
+      "windows": {
+        "command": "python",
+        "args": ["ci\\generate-version.py"]
+      },
+      "linux": {
+        "command": "python",
+        "args": ["./ci/generate-version.py"]
+      }
+    },
+    {
       "label": "Run Build",
       "type": "shell",
       "windows": {
         "options": {
           "env": {
-            "ENV_VCVARSALL": "C:\\Program Files (x86)Microsoft Visual Studio\\2022BuildToolsVCAuxiliaryBuild\\vcvarsall.bat",
-            "ENV_VCINSTALL": "C:\\Program Files (x86)Microsoft Visual Studio\\2022BuildToolsVC",
-            "ENV_QT_PATH": "D:\\Qt\\5.15.2"
+            "ENV_VCVARSALL": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvarsall.bat",
+            "ENV_VCINSTALL": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC",
+            "ENV_QT_PATH": "D:\\Qt\\5.15.2",
+            "BUILDER_TEMPLATE": "Visual Studio 17 2022"
           }
         },
-        "command": "ci\\win\\build_for_win_local.bat"
+        "command": "ci\\win\\build_for_win.bat",
+        "args": ["Debug", "x64"]
       },
       "linux": {
-        "command": "./ci/linux/build_for_linux.sh"
+        "command": "./ci/linux/build_for_linux.sh",
+        "args": ["Debug"]
       },
       "dependsOn": ["generate build version"],
-      "args": ["Debug"],
       "group": {
         "kind": "build",
         "isDefault": true

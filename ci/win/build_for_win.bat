@@ -85,8 +85,14 @@ if exist %temp_path% (
 )
 md %temp_path%
 cd %temp_path%
+:: Check if BUILDER_TEMPLATE is set, if not set a default value
+if "%BUILDER_TEMPLATE%"=="" (
+    set "BUILDER_TEMPLATE=Visual Studio 17 2022"
+)
 
-set cmake_params=-DCMAKE_PREFIX_PATH=%qt_cmake_path% -DCMAKE_BUILD_TYPE=%build_mode% -G "Visual Studio 16 2019" -A %cmake_vs_build_mode%
+:: Set cmake_params
+set cmake_params=-DCMAKE_PREFIX_PATH=%qt_cmake_path% -DCMAKE_BUILD_TYPE=%build_mode% -G "%BUILDER_TEMPLATE%" -A %cmake_vs_build_mode%
+
 echo cmake params: %cmake_params%
 
 cmake %cmake_params% ../..

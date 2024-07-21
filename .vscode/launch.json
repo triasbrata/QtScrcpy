@@ -5,13 +5,17 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/output/x64/debug/QtScrcpy",
+      "windows": {
+        "program": "${workspaceRoot}\\output\\x64\\Debug\\QtScrcpy.exe",
+        "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe"
+      },
       "cwd": "${workspaceFolder}/QtScrcpy", // Ensure this is set correctly
       "args": [],
       "stopAtEntry": false,
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
-      "preLaunchTask": "Run build_for_linux.sh with debug", // Link to the task label
+      "preLaunchTask": "Run Build", // Link to the task label
       "miDebuggerPath": "/usr/bin/gdb", // Ensure this is the correct path
       "setupCommands": [
         {
