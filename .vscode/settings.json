@@ -13,6 +13,8 @@
     "new": "cpp",
     "clang-format.executable": "/usr/bin/clang-format",
     "xstring": "cpp",
-    "xtree": "cpp"
-  }
+    "xtree": "cpp",
+    "fstream": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
