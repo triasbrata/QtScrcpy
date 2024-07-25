@@ -21,7 +21,10 @@
     "qmouseevent": "cpp",
     "qwheelevent": "cpp",
     "qfiledialog": "cpp",
-    "qrandomgenerator": "cpp"
+    "qrandomgenerator": "cpp",
+    "iterator": "cpp",
+    "xhash": "cpp",
+    "xutility": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

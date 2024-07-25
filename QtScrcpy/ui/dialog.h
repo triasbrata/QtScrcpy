@@ -12,6 +12,7 @@
 #include "../QtScrcpyCore/include/QtScrcpyCore.h"
 #include "adbprocess.h"
 #include "audio/audiooutput.h"
+#include <unordered_map>
 
 namespace Ui
 {
@@ -90,6 +91,7 @@ private:
     QAction *m_quit;
     AudioOutput m_audioOutput;
     QTimer m_autoUpdatetimer;
+    std::unordered_map<QString, qsc::DeviceParams> m_cacheDeviceParam;
 };
 
 #endif // DIALOG_H

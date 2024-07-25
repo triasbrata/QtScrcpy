@@ -337,7 +337,7 @@ void Dialog::on_startServerBtn_clicked()
     params.codecOptions = Config::getInstance().getCodecOptions();
     params.codecName = Config::getInstance().getCodecName();
     params.scid = QRandomGenerator::global()->bounded(1, 10000) & 0x7FFFFFFF;
-
+    this->m_cacheDeviceParam[params.serial] = params;
     qsc::IDeviceManage::getInstance().connectDevice(params);
 }
 
@@ -467,7 +467,15 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 
     qsc::IDeviceManage::getInstance().getDevice(serial)->setUserData(static_cast<void *>(videoForm));
     qsc::IDeviceManage::getInstance().getDevice(serial)->registerDeviceObserver(videoForm);
-    connect(videoForm, &VideoForm::reconnect, this, [this]() { this->on_startServerBtn_clicked(); });
+    connect(videoForm, &VideoForm::reconnect, this, [this, serial]() {
+        this->onDeviceDisconnected(serial);
+        if (this->m_cacheDeviceParam.count(serial) > 0) {
+            auto params = this->m_cacheDeviceParam[serial];
+            qsc::IDeviceManage::getInstance().connectDevice(params);
+            return;
+        }
+        this->on_startServerBtn_clicked();
+    });
     videoForm->showFPS(ui->fpsCheck->isChecked());
     if (ui->alwaysTopCheck->isChecked()) {
         videoForm->staysOnTop();

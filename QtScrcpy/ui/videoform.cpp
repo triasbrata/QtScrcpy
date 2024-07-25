@@ -703,7 +703,6 @@ void VideoForm::keyPressEvent(QKeyEvent *event)
         return;
     }
     if (Qt::Key_Delete == event->key()) {
-        this->close();
         emit reconnect();
     }
     if (Qt::Key_Escape == event->key() && !event->isAutoRepeat() && isFullScreen()) {
