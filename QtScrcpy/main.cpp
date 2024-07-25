@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
 {
     // set env
 #ifdef Q_OS_WIN32
-    qputenv("QTSCRCPY_ADB_PATH", "../../../../../QtScrcpy/QtScrcpyCore/src/third_party/adb/win/adb.exe");
-    qputenv("QTSCRCPY_SERVER_PATH", "../../../../../QtScrcpy/QtScrcpyCore/src/third_party/scrcpy-server");
-    qputenv("QTSCRCPY_KEYMAP_PATH", "../../../../../keymap");
-    qputenv("QTSCRCPY_CONFIG_PATH", "../../../../../config");
+    qputenv("QTSCRCPY_ADB_PATH", "./QtScrcpy/QtScrcpyCore/src/third_party/adb/win/adb.exe");
+    qputenv("QTSCRCPY_SERVER_PATH", "./QtScrcpy/QtScrcpyCore/src/third_party/scrcpy-server");
+    qputenv("QTSCRCPY_KEYMAP_PATH", "./keymap");
+    qputenv("QTSCRCPY_CONFIG_PATH", "./config");
 #endif
 
 #ifdef Q_OS_OSX
