@@ -75,6 +75,9 @@
 #define COMMON_SHOW_FPS_KEY "ShowFPS"
 #define COMMON_SHOW_FPS_DEF false
 
+#define COMMON_GAME_SCRIPT_FILEPATH_KEY "GameScriptFilePath"
+#define COMMON_GAME_SCRIPT_FILEPATH_DEF false
+
 #define COMMON_WINDOW_ON_TOP_KEY "WindowOnTop"
 #define COMMON_WINDOW_ON_TOP_DEF false
 
@@ -158,6 +161,7 @@ void Config::setUserBootConfig(const UserBootConfig &config)
     m_userData->setValue(COMMON_RECORD_BACKGROUD_KEY, config.recordBackground);
     m_userData->setValue(COMMON_REVERSE_CONNECT_KEY, config.reverseConnect);
     m_userData->setValue(COMMON_SHOW_FPS_KEY, config.showFPS);
+    m_userData->setValue(COMMON_GAME_SCRIPT_FILEPATH_KEY, config.gameScriptPath);
     m_userData->setValue(COMMON_WINDOW_ON_TOP_KEY, config.windowOnTop);
     m_userData->setValue(COMMON_AUTO_OFF_SCREEN_KEY, config.autoOffScreen);
     m_userData->setValue(COMMON_KEEP_ALIVE_KEY, config.keepAlive);
@@ -181,6 +185,7 @@ UserBootConfig Config::getUserBootConfig()
     config.recordBackground = m_userData->value(COMMON_RECORD_BACKGROUD_KEY, COMMON_RECORD_BACKGROUD_DEF).toBool();
     config.reverseConnect = m_userData->value(COMMON_REVERSE_CONNECT_KEY, COMMON_REVERSE_CONNECT_DEF).toBool();
     config.showFPS = m_userData->value(COMMON_SHOW_FPS_KEY, COMMON_SHOW_FPS_DEF).toBool();
+    config.gameScriptPath = m_userData->value(COMMON_GAME_SCRIPT_FILEPATH_KEY, COMMON_GAME_SCRIPT_FILEPATH_DEF).toString();
     config.windowOnTop = m_userData->value(COMMON_WINDOW_ON_TOP_KEY, COMMON_WINDOW_ON_TOP_DEF).toBool();
     config.autoOffScreen = m_userData->value(COMMON_AUTO_OFF_SCREEN_KEY, COMMON_AUTO_OFF_SCREEN_DEF).toBool();
     config.keepAlive = m_userData->value(COMMON_KEEP_ALIVE_KEY, COMMON_KEEP_ALIVE_DEF).toBool();

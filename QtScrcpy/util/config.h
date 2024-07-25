@@ -8,19 +8,20 @@
 struct UserBootConfig
 {
     QString recordPath = "";
+    QString gameScriptPath = "";
     quint32 bitRate = 2000000;
     int maxSizeIndex = 0;
     int recordFormatIndex = 0;
     int lockOrientationIndex = 0;
-    bool recordScreen     = false;
+    bool recordScreen = false;
     bool recordBackground = false;
-    bool reverseConnect   = true;
-    bool showFPS          = false;
-    bool windowOnTop      = false;
-    bool autoOffScreen    = false;
-    bool framelessWindow  = false;
-    bool keepAlive        = false;
-    bool simpleMode       = false;
+    bool reverseConnect = true;
+    bool showFPS = false;
+    bool windowOnTop = false;
+    bool autoOffScreen = false;
+    bool framelessWindow = false;
+    bool keepAlive = false;
+    bool simpleMode = false;
     bool autoUpdateDevice = true;
 };
 
@@ -29,7 +30,6 @@ class Config : public QObject
 {
     Q_OBJECT
 public:
-
     static Config &getInstance();
 
     // config

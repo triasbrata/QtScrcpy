@@ -22,6 +22,7 @@ const QString &getKeyMapPath()
 {
     if (s_keyMapPath.isEmpty()) {
         s_keyMapPath = QString::fromLocal8Bit(qgetenv("QTSCRCPY_KEYMAP_PATH"));
+
         QFileInfo fileInfo(s_keyMapPath);
         qDebug() << "keymap path: " << fileInfo.absolutePath();
         if (s_keyMapPath.isEmpty() || !fileInfo.isDir()) {
@@ -36,8 +37,8 @@ Dialog::Dialog(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     ui->setupUi(this);
     initUI();
 
-    updateBootConfig(true);
     on_refreshGameScriptBtn_clicked();
+    updateBootConfig(true);
     on_useSingleModeCheck_clicked();
     on_updateDevice_clicked();
 
@@ -199,6 +200,15 @@ void Dialog::updateBootConfig(bool toView)
         ui->stayAwakeCheck->setChecked(config.keepAlive);
         ui->useSingleModeCheck->setChecked(config.simpleMode);
         ui->autoUpdatecheckBox->setChecked(config.autoUpdateDevice);
+        if (config.gameScriptPath != "") {
+            for (int i = 0; i < ui->gameBox->count(); i++) {
+                if (ui->gameBox->itemText(i) == config.gameScriptPath) {
+                    ui->gameBox->setCurrentIndex(i);
+                    break;
+                }
+            }
+        }
+
     } else {
         UserBootConfig config;
 
@@ -217,6 +227,7 @@ void Dialog::updateBootConfig(bool toView)
         config.keepAlive = ui->stayAwakeCheck->isChecked();
         config.simpleMode = ui->useSingleModeCheck->isChecked();
         config.autoUpdateDevice = ui->autoUpdatecheckBox->isChecked();
+        config.gameScriptPath = ui->gameBox->currentText();
         Config::getInstance().setUserBootConfig(config);
     }
 }
@@ -448,7 +459,6 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
     if (!success) {
         return;
     }
-
     auto videoForm = new VideoForm(ui->framelessCheck->isChecked(), Config::getInstance().getSkin());
     videoForm->setSerial(serial);
 
@@ -487,6 +497,8 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 #endif
 
     GroupController::instance().addDevice(serial);
+
+    on_applyScriptBtn_clicked();
 }
 
 void Dialog::onDeviceDisconnected(QString serial)
