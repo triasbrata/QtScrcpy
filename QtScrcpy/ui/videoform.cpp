@@ -15,9 +15,9 @@
 
 #include "config.h"
 #include "iconhelper.h"
+#include "mousetap/mousetap.h"
 #include "qyuvopenglwidget.h"
 #include "toolform.h"
-#include "mousetap/mousetap.h"
 #include "ui_videoform.h"
 #include "videoform.h"
 
@@ -142,7 +142,7 @@ void VideoForm::showFPS(bool show)
     m_fpsLabel->setVisible(show);
 }
 
-void VideoForm::updateRender(int width, int height, uint8_t* dataY, uint8_t* dataU, uint8_t* dataV, int linesizeY, int linesizeU, int linesizeV)
+void VideoForm::updateRender(int width, int height, uint8_t *dataY, uint8_t *dataU, uint8_t *dataV, int linesizeY, int linesizeU, int linesizeV)
 {
     if (m_videoWidget->isHidden()) {
         if (m_loadingWidget) {
@@ -680,8 +680,17 @@ void VideoForm::wheelEvent(QWheelEvent *event)
         QPointF pos = m_videoWidget->mapFrom(this, event->pos());
 
         QWheelEvent wheelEvent(
-            pos, event->globalPosF(), event->pixelDelta(), event->angleDelta(), event->delta(), event->orientation(),
-            event->buttons(), event->modifiers(), event->phase(), event->source(), event->inverted());
+            pos,
+            event->globalPosF(),
+            event->pixelDelta(),
+            event->angleDelta(),
+            event->delta(),
+            event->orientation(),
+            event->buttons(),
+            event->modifiers(),
+            event->phase(),
+            event->source(),
+            event->inverted());
 #endif
         emit device->wheelEvent(&wheelEvent, m_videoWidget->frameSize(), m_videoWidget->size());
     }
@@ -692,6 +701,9 @@ void VideoForm::keyPressEvent(QKeyEvent *event)
     auto device = qsc::IDeviceManage::getInstance().getDevice(m_serial);
     if (!device) {
         return;
+    }
+    if (Qt::Key_Delete == event->key()) {
+        VideoForm::quit()
     }
     if (Qt::Key_Escape == event->key() && !event->isAutoRepeat() && isFullScreen()) {
         switchFullScreen();
@@ -722,9 +734,7 @@ void VideoForm::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event)
     if (!isFullScreen()) {
-        QTimer::singleShot(500, this, [this](){
-            showToolForm();
-        });
+        QTimer::singleShot(500, this, [this]() { showToolForm(); });
     }
 }
 
