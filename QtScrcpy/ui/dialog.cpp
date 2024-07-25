@@ -106,7 +106,9 @@ Dialog::Dialog(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
             outLog(log, newLine);
         }
     });
-
+#ifdef QT_DEBUG
+    qDebug() << "disable tray icon";
+#else
     m_hideIcon = new QSystemTrayIcon(this);
     m_hideIcon->setIcon(QIcon(":/image/tray/logo.png"));
     m_menu = new QMenu(this);
@@ -124,6 +126,7 @@ Dialog::Dialog(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
         qApp->quit();
     });
     connect(m_hideIcon, &QSystemTrayIcon::activated, this, &Dialog::slotActivated);
+#endif
 
     connect(&qsc::IDeviceManage::getInstance(), &qsc::IDeviceManage::deviceConnected, this, &Dialog::onDeviceConnected);
     connect(&qsc::IDeviceManage::getInstance(), &qsc::IDeviceManage::deviceDisconnected, this, &Dialog::onDeviceDisconnected);
@@ -464,7 +467,7 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 
     qsc::IDeviceManage::getInstance().getDevice(serial)->setUserData(static_cast<void *>(videoForm));
     qsc::IDeviceManage::getInstance().getDevice(serial)->registerDeviceObserver(videoForm);
-
+    connect(videoForm, &VideoForm::reconnect, this, [this]() { this->on_startServerBtn_clicked(); });
     videoForm->showFPS(ui->fpsCheck->isChecked());
     if (ui->alwaysTopCheck->isChecked()) {
         videoForm->staysOnTop();
@@ -497,7 +500,6 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 #endif
 
     GroupController::instance().addDevice(serial);
-
     on_applyScriptBtn_clicked();
 }
 

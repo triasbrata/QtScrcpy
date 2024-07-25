@@ -15,17 +15,22 @@ class ToolForm;
 class FileHandler;
 class QYUVOpenGLWidget;
 class QLabel;
-class VideoForm : public QWidget, public qsc::DeviceObserver
+class VideoForm
+    : public QWidget
+    , public qsc::DeviceObserver
 {
     Q_OBJECT
+signals:
+    void reconnect();
+
 public:
     explicit VideoForm(bool framelessWindow = false, bool skin = true, QWidget *parent = 0);
     ~VideoForm();
 
     void staysOnTop(bool top = true);
     void updateShowSize(const QSize &newSize);
-    void updateRender(int width, int height, uint8_t* dataY, uint8_t* dataU, uint8_t* dataV, int linesizeY, int linesizeU, int linesizeV);
-    void setSerial(const QString& serial);
+    void updateRender(int width, int height, uint8_t *dataY, uint8_t *dataU, uint8_t *dataV, int linesizeY, int linesizeU, int linesizeV);
+    void setSerial(const QString &serial);
     QRect getGrabCursorRect();
     const QSize &frameSize();
     void resizeSquare();
@@ -36,8 +41,7 @@ public:
     bool isHost();
 
 private:
-    void onFrame(int width, int height, uint8_t* dataY, uint8_t* dataU, uint8_t* dataV,
-                 int linesizeY, int linesizeU, int linesizeV) override;
+    void onFrame(int width, int height, uint8_t *dataY, uint8_t *dataU, uint8_t *dataV, int linesizeY, int linesizeU, int linesizeV) override;
     void updateFPS(quint32 fps) override;
     void grabCursor(bool grab) override;
 
