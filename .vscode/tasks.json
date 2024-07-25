@@ -13,17 +13,6 @@
       }
     },
     {
-      "label": "generate build version",
-      "windows": {
-        "command": "python",
-        "args": ["ci\\generate-version.py"]
-      },
-      "linux": {
-        "command": "python",
-        "args": ["./ci/generate-version.py"]
-      }
-    },
-    {
       "label": "Run Build",
       "type": "shell",
       "windows": {

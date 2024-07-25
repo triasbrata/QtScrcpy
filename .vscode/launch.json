@@ -29,6 +29,18 @@
           "ignoreFailures": true
         }
       ]
+    },
+    {
+      "name": "C/C++: cl.exe build and debug active file",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceRoot}\\output\\x64\\Debug\\QtScrcpy.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}", // Ensure this is set correctly
+      "environment": [],
+      "externalConsole": false,
+      "preLaunchTask": "Run Build"
     }
   ],
   "version": "2.0.0"

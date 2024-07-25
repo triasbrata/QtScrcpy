@@ -14,7 +14,14 @@
     "clang-format.executable": "/usr/bin/clang-format",
     "xstring": "cpp",
     "xtree": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "xlocmes": "cpp",
+    "qdebug": "cpp",
+    "qkeyevent": "cpp",
+    "qmouseevent": "cpp",
+    "qwheelevent": "cpp",
+    "qfiledialog": "cpp",
+    "qrandomgenerator": "cpp"
   },
-  "C_Cpp.errorSquiggles": "enabled"
+  "C_Cpp.errorSquiggles": "disabled"
 }
