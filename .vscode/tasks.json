@@ -13,6 +13,27 @@
       }
     },
     {
+      "label": "Run Build Prod",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "env": {
+            "ENV_VCVARSALL": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvarsall.bat",
+            "ENV_VCINSTALL": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC",
+            "ENV_QT_PATH": "D:\\Qt\\5.15.2",
+            "BUILDER_TEMPLATE": "Visual Studio 17 2022"
+          }
+        },
+        "command": "ci\\win\\build_for_win.bat",
+        "args": ["RelWithDebInfo", "x64"]
+      },
+      "dependsOn": ["generate build version"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Run Build",
       "type": "shell",
       "windows": {
