@@ -87,7 +87,7 @@ md %temp_path%
 cd %temp_path%
 :: Check if BUILDER_TEMPLATE is set, if not set a default value
 if "%BUILDER_TEMPLATE%"=="" (
-    set BUILDER_TEMPLATE="Visual Studio 17 2022"
+    set "BUILDER_TEMPLATE=Visual Studio 16 2019"
 )
 
 :: Set cmake_params
