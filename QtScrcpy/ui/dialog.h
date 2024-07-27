@@ -69,6 +69,8 @@ private slots:
 
 private:
     bool checkAdbRun();
+    bool startServer();
+    void reconnect(const QString &serial);
     void initUI();
     void updateBootConfig(bool toView = true);
     void execAdbCmd();

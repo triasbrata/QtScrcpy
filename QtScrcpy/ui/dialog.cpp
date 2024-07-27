@@ -306,8 +306,7 @@ void Dialog::on_updateDevice_clicked()
     outLog("update devices...", false);
     m_adb.execute("", QStringList() << "devices");
 }
-
-void Dialog::on_startServerBtn_clicked()
+bool Dialog::startServer()
 {
     outLog("start server...", false);
 
@@ -338,7 +337,12 @@ void Dialog::on_startServerBtn_clicked()
     params.codecName = Config::getInstance().getCodecName();
     params.scid = QRandomGenerator::global()->bounded(1, 10000) & 0x7FFFFFFF;
     this->m_cacheDeviceParam[params.serial] = params;
-    qsc::IDeviceManage::getInstance().connectDevice(params);
+    return qsc::IDeviceManage::getInstance().connectDevice(params);
+}
+
+void Dialog::on_startServerBtn_clicked()
+{
+    this->startServer();
 }
 
 void Dialog::on_stopServerBtn_clicked()
@@ -455,6 +459,33 @@ void Dialog::getIPbyIp()
 
     m_adb.execute(ui->serialBox->currentText().trimmed(), adbArgs);
 }
+void Dialog::reconnect(const QString &serial)
+{
+    //force restore override cursor
+    if (QApplication::overrideCursor()) {
+        QGuiApplication::restoreOverrideCursor();
+    }
+    this->onDeviceDisconnected(serial);
+    int retryConnect = 0;
+    while (true) {
+        if (retryConnect > 10) {
+            qDebug() << "connecting attemp more than " << retryConnect << "times";
+            return;
+        }
+        if (this->m_cacheDeviceParam.count(serial) > 0) {
+            auto params = this->m_cacheDeviceParam[serial];
+            bool connect = qsc::IDeviceManage::getInstance().connectDevice(params);
+            if (connect) {
+                return;
+            }
+        }
+        if (this->startServer()) {
+            break;
+        }
+        retryConnect++;
+        qDebug() << "connecting attemp " << retryConnect;
+    }
+}
 
 void Dialog::onDeviceConnected(bool success, const QString &serial, const QString &deviceName, const QSize &size)
 {
@@ -467,14 +498,9 @@ void Dialog::onDeviceConnected(bool success, const QString &serial, const QStrin
 
     qsc::IDeviceManage::getInstance().getDevice(serial)->setUserData(static_cast<void *>(videoForm));
     qsc::IDeviceManage::getInstance().getDevice(serial)->registerDeviceObserver(videoForm);
-    connect(videoForm, &VideoForm::reconnect, this, [this, serial]() {
-        this->onDeviceDisconnected(serial);
-        if (this->m_cacheDeviceParam.count(serial) > 0) {
-            auto params = this->m_cacheDeviceParam[serial];
-            qsc::IDeviceManage::getInstance().connectDevice(params);
-            return;
-        }
-        this->on_startServerBtn_clicked();
+    connect(videoForm, &VideoForm::reconnect, this, [this, serial, videoForm]() {
+        videoForm->grabCursor(false);
+        this->reconnect(serial);
     });
     videoForm->showFPS(ui->fpsCheck->isChecked());
     if (ui->alwaysTopCheck->isChecked()) {
